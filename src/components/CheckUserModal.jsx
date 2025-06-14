@@ -76,8 +76,10 @@ const CheckUserModal = ({ isOpen, onClose, onSuccess }) => {
         }}
       >
         <CloseModalButton
-          onClick={handleClose}
-          className="absolute top-6 right-6 cursor-pointer"
+          onClick={loading ? () => {} : handleClose}
+          className={`absolute top-6 right-6 cursor-pointer ${
+            loading ? "opacity-50 animate-pulse cursor-not-allowed" : ""
+          }`}
         />
         <div className="-translate-y-10 flex flex-col justify-center items-center gap-4">
           <h2 className=" text-center text-lg font-bold text-white w-[60%] uppercase">

@@ -1,9 +1,10 @@
-import bg from "../assets/images/bg.webp";
 import logo from "../assets/images/logo.png";
 import minigame from "../assets/images/minigame.webp";
 import { CompoundLoginModal } from "../components/CompoundLoginModal";
 import Attendance from "./Attendance/Index";
 import { useUserData } from "../stores/userDataStore";
+import LoginBG from "../assets/images/login-page-bg.webp";
+import GameBG from "../assets/images/game-bg.webp";
 
 const Home = () => {
   const userData = useUserData();
@@ -11,7 +12,11 @@ const Home = () => {
   return (
     <div
       className="md:w-[500px] min-h-screen mx-auto flex flex-col relative"
-      style={{ background: `url(${bg}) center/cover no-repeat` }}
+      style={{
+        background: `url(${
+          userData === null ? LoginBG : GameBG
+        }) center/cover no-repeat`,
+      }}
     >
       <div className="flex flex-col items-center pb-2">
         <a
