@@ -16,9 +16,23 @@ export default function useSubmitAttendance() {
     },
     onError: (error) => {
       console.log("điểm danh thất bại", error);
-      enqueueSnackbar(error?.response?.data?.message || "Điểm danh thất bại", {
-        variant: "error",
-      });
+      if (error.status === 401) {
+        enqueueSnackbar("Token không hợp lệ", { variant: "error" });
+        setTimeout(() => {
+          localStorage.removeItem("token");
+          localStorage.removeItem("username");
+          localStorage.removeItem("name");
+          localStorage.removeItem("resetToken");
+          window.location.reload();
+        }, 3000);
+      } else {
+        enqueueSnackbar(
+          error?.response?.data?.message || "Điểm danh thất bại",
+          {
+            variant: "error",
+          }
+        );
+      }
     },
   });
 }
