@@ -7,7 +7,6 @@ const AttendanceCalendar = () => {
   const [currentDate, setCurrentDate] = useState(new Date());
 
   const { attendance } = useAttendance();
-  console.log("attendance", attendance?.data?.result);
   const attendanceData =
     attendance?.data?.result.map((item) => ({
       ...item,
@@ -30,6 +29,8 @@ const AttendanceCalendar = () => {
     setCurrentDate((prev) => {
       const newDate = new Date(prev);
       newDate.setMonth(prev.getMonth() + direction);
+
+      console.log("newDate", newDate);
       return newDate;
     });
   };
@@ -53,12 +54,26 @@ const AttendanceCalendar = () => {
     const range = attendanceData.find((item) => {
       if (
         item.type === "range" &&
-        item.start.getMonth() === currentDate.getMonth() &&
         item.start.getFullYear() === currentDate.getFullYear()
       ) {
         const start = item.start.getDate();
         const end = item.end.getDate();
-        return day >= start && day <= end;
+        const startMonth = item.start.getMonth();
+        const endMonth = item.end.getMonth();
+        const currentMonth = currentDate.getMonth();
+
+        if (currentMonth === startMonth && currentMonth === endMonth) {
+          return day >= start && day <= end;
+        }
+
+        if (startMonth < endMonth) {
+          if (currentMonth === startMonth) {
+            return day >= start;
+          }
+          if (currentMonth === endMonth) {
+            return day <= end;
+          }
+        }
       }
       return false;
     });
@@ -101,7 +116,7 @@ const AttendanceCalendar = () => {
     // Previous month's trailing days
     const prevMonth = new Date(
       currentDate.getFullYear(),
-      currentDate.getMonth() - 1,
+      currentDate.getMonth(),
       0
     );
     const prevMonthDays = prevMonth.getDate();
